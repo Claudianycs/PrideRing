@@ -1,4 +1,7 @@
-# PRiDeRing MVP Refatorado
+# PRiDeRing MVP
+
+<img width="1198" height="1313" alt="ChatGPT Image 1 de ago  de 2026, 21_56_39" src="https://github.com/user-attachments/assets/1253b663-7407-4af8-9fb0-34d564d9c549" />
+
 
 Este pacote contém as páginas HTML com CSS e JavaScript externos.
 
