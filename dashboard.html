@@ -1,52 +1,768 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Dashboard - PRiDeRing</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/global.css">
-<link rel="stylesheet" href="css/dashboard.css">
-<link rel="stylesheet" href="css/responsive.css">
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+    <meta name="theme-color" content="#17142b">
+
+    <title>Início - PRiDeRing</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/responsive.css">
 </head>
-<body class="page-dashboard">
-<header>
-<h1>Olá, Alex</h1>
-<div class="sub">Bem-vindo ao PRiDeRing</div>
-</header>
-<div class="container">
-<div class="card">
-<div class="status">
-<div><strong>Meu Anel NFC</strong><br><small>Anel vinculado</small></div>
-<div class="badge">Conectado</div>
-</div>
-</div>
 
-<div class="card">
-<h3>Informações Compartilhadas</h3>
-<div class="item"><span>Nome</span><div class="switch"></div></div>
-<div class="item"><span>Pronome</span><div class="switch"></div></div>
-<div class="item"><span>Instagram</span><div class="switch"></div></div>
-<div class="item"><span>WhatsApp</span><div class="switch"></div></div>
-</div>
+<body class="page-dashboard page-with-bottom-navigation">
 
-<div class="grid">
-<a class="btn" href="perfil.html">Meu Perfil</a>
-<a class="btn" href="cadastrar-nfc.html">Cadastrar NFC</a>
-<a class="btn" href="perfil-publico.html">Perfil Público</a>
-<a class="btn" href="configuracoes.html">Configurações</a>
-</div>
-</div>
+    <header class="dashboard-header">
 
-<nav>
-<a href="#">Início</a>
-<a href="perfil.html">Perfil</a>
-<a href="configuracoes.html">Config.</a>
-</nav>
-<script src="javascript/storage.js"></script>
-<script src="javascript/api.js"></script>
-<script src="javascript/dashboard.js"></script>
+        <div class="dashboard-brand">
+
+            <img src="assets/logo.png" alt="PRiDeRing" class="dashboard-logo">
+
+            <a class="header-button" href="configuracoes.html" aria-label="Abrir configurações">
+
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+
+                    <path
+                        d="M12 15.5A3.5 3.5 0 1 0 12 8a3.5 3.5 0 0 0 0 7.5Zm7.43-2.53c.04-.32.07-.64.07-.97s-.03-.65-.07-.97l2.11-1.65-2-3.46-2.49 1a7.77 7.77 0 0 0-1.68-.97L15 3.27h-4l-.37 2.68c-.6.25-1.16.57-1.68.97l-2.49-1-2 3.46 2.11 1.65c-.04.32-.07.64-.07.97s.03.65.07.97l-2.11 1.65 2 3.46 2.49-1c.52.4 1.08.72 1.68.97L11 20.73h4l.37-2.68c.6-.25 1.16-.57 1.68-.97l2.49 1 2-3.46-2.11-1.65Z"
+                    >
+
+                    </path>
+
+                </svg>
+
+            </a>
+
+        </div>
+
+        <div class="welcome">
+
+            <div>
+
+                <p class="welcome-label">
+                    Bem-vindo
+                </p>
+
+                <h1>
+                    Olá,
+                    <span id="userName">Alex</span>
+                </h1>
+
+                <p class="welcome-description">
+                    Controle seu anel, sua privacidade e suas conexões.
+                </p>
+
+            </div>
+
+            <a href="perfil.html" class="user-avatar" id="userAvatar" aria-label="Abrir meu perfil">
+                A
+            </a>
+
+        </div>
+
+    </header>
+
+    <main class="dashboard-container">
+
+        <!-- Anel NFC -->
+
+        <section class="ring-card" aria-labelledby="ringTitle">
+
+            <div class="ring-card-header">
+
+                <div class="ring-icon" aria-hidden="true">
+
+                    <svg viewBox="0 0 24 24">
+
+                        <path
+                            d="M8.4 4.7a5.6 5.6 0 0 1 7.2 0M6 2.5a9 9 0 0 1 12 0M10.5 7a2.3 2.3 0 0 1 3 0"
+                        ></path>
+
+                        <circle cx="12" cy="10" r="1.2"></circle>
+
+                        <path
+                            d="M6.5 14.5c0-2 2.46-3.5 5.5-3.5s5.5 1.5 5.5 3.5-2.46 5.5-5.5 5.5-5.5-3.5-5.5-5.5Z"
+                        ></path>
+
+                    </svg>
+
+                </div>
+
+                <div class="ring-information">
+
+                    <span class="eyebrow">
+                        Meu dispositivo
+                    </span>
+
+                    <h2 id="ringTitle">
+                        PRiDeRing
+                    </h2>
+
+                    <p id="ringName">
+                        Anel principal
+                    </p>
+
+                </div>
+
+                <span class="status-badge status-connected" id="ringStatus">
+
+                    <span class="status-dot"></span> Conectado
+
+                </span>
+
+            </div>
+
+            <div class="ring-card-footer">
+
+                <p>
+                    Seu anel está pronto para compartilhar o perfil configurado.
+                </p>
+
+                <a href="cadastrar-nfc.html" class="text-link">
+                    Gerenciar anel
+
+                    <span aria-hidden="true">
+                        →
+                    </span>
+                </a>
+
+            </div>
+
+        </section>
+
+        <!-- Resumo das conexões -->
+
+        <section class="connections-card" aria-labelledby="connectionsTitle">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="eyebrow">
+                        Rede
+                    </span>
+
+                    <h2 id="connectionsTitle">
+                        Minhas conexões
+                    </h2>
+
+                    <p id="connectionsDescription">
+                        Pessoas conectadas ao seu perfil pelo PRiDeRing.
+                    </p>
+
+                </div>
+
+                <a href="conexoes.html" class="section-link" aria-label="Abrir todas as conexões">
+                    Ver todas
+                </a>
+
+            </div>
+
+            <a href="conexoes.html" class="connections-summary" aria-label="Acessar minhas conexões">
+
+                <div class="connections-icon" aria-hidden="true">
+
+                    <svg viewBox="0 0 24 24">
+
+                        <circle cx="8" cy="8" r="3"></circle>
+                        <circle cx="17" cy="8" r="3"></circle>
+
+                        <path
+                            d="M2.5 20a5.5 5.5 0 0 1 11 0"
+                        ></path>
+
+                        <path
+                            d="M11 20a6 6 0 0 1 11 0"
+                        ></path>
+
+                    </svg>
+
+                </div>
+
+                <div class="connections-information">
+
+                    <strong id="connectionCount">
+                        0 conexões
+                    </strong>
+
+                    <span id="connectionSummary">
+                        Suas conexões aparecerão aqui.
+                    </span>
+
+                </div>
+
+                <svg class="connections-arrow" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m9 18 6-6-6-6"></path>
+                </svg>
+
+            </a>
+
+            <article class="recent-connection" id="recentConnection" hidden>
+
+                <div class="recent-connection-avatar" id="recentConnectionAvatar" aria-hidden="true">
+                    P
+                </div>
+
+                <div class="recent-connection-content">
+
+                    <span>
+                        Conexão mais recente
+                    </span>
+
+                    <strong id="recentConnectionName">
+                        Pessoa
+                    </strong>
+
+                    <small id="recentConnectionDetails">
+                        Conectado pelo PRiDeRing
+                    </small>
+
+                </div>
+
+                <a href="conexoes.html" class="recent-connection-link">
+                    Ver
+                </a>
+
+            </article>
+
+        </section>
+
+        <!-- Privacidade -->
+
+        <section class="privacy-card" aria-labelledby="privacyTitle">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="eyebrow">
+                        Privacidade
+                    </span>
+
+                    <h2 id="privacyTitle">
+                        O que compartilhar
+                    </h2>
+
+                    <p id="shareSummary">
+                        Selecione as informações visíveis no seu perfil público.
+                    </p>
+
+                </div>
+
+                <a href="compartilhar.html" class="section-link" aria-label="Abrir todas as opções de compartilhamento">
+                    Editar
+                </a>
+
+            </div>
+
+            <div class="sharing-list">
+
+                <div class="sharing-item">
+
+                    <div class="sharing-icon" aria-hidden="true">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <circle cx="12" cy="8" r="4"></circle>
+
+                            <path
+                                d="M4.5 21a7.5 7.5 0 0 1 15 0"
+                            ></path>
+
+                        </svg>
+
+                    </div>
+
+                    <label for="shareName" class="sharing-content">
+
+                        <strong>Nome</strong>
+
+                        <span id="shareNameValue">
+                            Alex
+                        </span>
+
+                    </label>
+
+                    <label class="switch">
+
+                        <input
+                            id="shareName"
+                            type="checkbox"
+                            data-share="name"
+                            checked
+                        >
+
+                        <span class="switch-control"></span>
+
+                    </label>
+
+                </div>
+
+                <div class="sharing-item">
+
+                    <div class="sharing-icon" aria-hidden="true">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <path
+                                d="M12 4v16M8 8l4-4 4 4"
+                            ></path>
+
+                        </svg>
+
+                    </div>
+
+                    <label for="sharePronoun" class="sharing-content">
+
+                        <strong>Pronome</strong>
+
+                        <span id="sharePronounValue">
+                            ele/dele
+                        </span>
+
+                    </label>
+
+                    <label class="switch">
+
+                        <input
+                            id="sharePronoun"
+                            type="checkbox"
+                            data-share="pronoun"
+                            checked
+                        >
+
+                        <span class="switch-control"></span>
+
+                    </label>
+
+                </div>
+
+                <div class="sharing-item">
+
+                    <div class="sharing-icon" aria-hidden="true">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <rect
+                                x="3"
+                                y="3"
+                                width="18"
+                                height="18"
+                                rx="5"
+                            ></rect>
+
+                            <circle
+                                cx="12"
+                                cy="12"
+                                r="4"
+                            ></circle>
+
+                            <circle
+                                cx="17.5"
+                                cy="6.5"
+                                r="1"
+                                class="fill"
+                            ></circle>
+
+                        </svg>
+
+                    </div>
+
+                    <label for="shareInstagram" class="sharing-content">
+
+                        <strong>Instagram</strong>
+
+                        <span id="shareInstagramValue">
+                            @alex
+                        </span>
+
+                    </label>
+
+                    <label class="switch">
+
+                        <input
+                            id="shareInstagram"
+                            type="checkbox"
+                            data-share="instagram"
+                            checked
+                        >
+
+                        <span class="switch-control"></span>
+
+                    </label>
+
+                </div>
+
+                <div class="sharing-item">
+
+                    <div class="sharing-icon" aria-hidden="true">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <path
+                                d="M20.5 11.5a8.5 8.5 0 0 1-12.58 7.46L3.5 20.5l1.5-4.3A8.5 8.5 0 1 1 20.5 11.5Z"
+                            ></path>
+
+                            <path
+                                d="M9 8.5c.5 3 2 4.5 5 5"
+                            ></path>
+
+                        </svg>
+
+                    </div>
+
+                    <label for="shareWhatsapp" class="sharing-content">
+
+                        <strong>WhatsApp</strong>
+
+                        <span id="shareWhatsappValue">
+                            Informação privada
+                        </span>
+
+                    </label>
+
+                    <label class="switch">
+
+                        <input
+                            id="shareWhatsapp"
+                            type="checkbox"
+                            data-share="whatsapp"
+                        >
+
+                        <span class="switch-control"></span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+            <div class="privacy-feedback">
+
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+
+                    <rect
+                        x="5"
+                        y="10"
+                        width="14"
+                        height="11"
+                        rx="2"
+                    ></rect>
+
+                    <path
+                        d="M8 10V7a4 4 0 0 1 8 0v3"
+                    ></path>
+
+                </svg>
+
+                <p>
+                    Apenas as informações ativadas serão exibidas para outras pessoas.
+                </p>
+
+            </div>
+
+        </section>
+
+        <!-- Ações rápidas -->
+
+        <section class="quick-actions-section" aria-labelledby="quickActionsTitle">
+
+            <div class="section-heading compact">
+
+                <div>
+
+                    <span class="eyebrow">
+                        Acesso rápido
+                    </span>
+
+                    <h2 id="quickActionsTitle">
+                        O que deseja fazer?
+                    </h2>
+
+                </div>
+
+            </div>
+
+            <div class="quick-actions">
+
+                <a class="action-card action-primary" href="conexoes.html">
+
+                    <span class="action-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <circle cx="8" cy="8" r="3"></circle>
+                            <circle cx="17" cy="8" r="3"></circle>
+
+                            <path
+                                d="M2.5 20a5.5 5.5 0 0 1 11 0"
+                            ></path>
+
+                            <path
+                                d="M11 20a6 6 0 0 1 11 0"
+                            ></path>
+
+                        </svg>
+
+                    </span>
+
+                    <span class="action-text">
+
+                        <strong>
+                            Minhas conexões
+                        </strong>
+
+                        <small>
+                            Veja as pessoas conectadas
+                        </small>
+
+                    </span>
+
+                    <span class="action-arrow" aria-hidden="true">
+                        →
+                    </span>
+
+                </a>
+
+                <a class="action-card" href="perfil.html">
+
+                    <span class="action-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <circle cx="12" cy="8" r="4"></circle>
+
+                            <path
+                                d="M4.5 21a7.5 7.5 0 0 1 15 0"
+                            ></path>
+
+                        </svg>
+
+                    </span>
+
+                    <span class="action-text">
+
+                        <strong>
+                            Editar perfil
+                        </strong>
+
+                        <small>
+                            Atualize seus dados
+                        </small>
+
+                    </span>
+
+                    <span class="action-arrow" aria-hidden="true">
+                        →
+                    </span>
+
+                </a>
+
+                <a class="action-card" href="cadastrar-nfc.html">
+
+                    <span class="action-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <path
+                                d="M8 6a8.5 8.5 0 0 1 8 0M9.8 9a5.5 5.5 0 0 1 4.4 0M11 12a2.4 2.4 0 0 1 2 0"
+                            ></path>
+
+                            <circle
+                                cx="12"
+                                cy="15"
+                                r="1.4"
+                            ></circle>
+
+                        </svg>
+
+                    </span>
+
+                    <span class="action-text">
+
+                        <strong>
+                            Gerenciar NFC
+                        </strong>
+
+                        <small>
+                            Vincule ou altere o anel
+                        </small>
+
+                    </span>
+
+                    <span class="action-arrow" aria-hidden="true">
+                        →
+                    </span>
+
+                </a>
+
+                <a class="action-card" href="perfil-publico.html">
+
+                    <span class="action-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <path
+                                d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"
+                            ></path>
+
+                            <circle
+                                cx="12"
+                                cy="12"
+                                r="2.5"
+                            ></circle>
+
+                        </svg>
+
+                    </span>
+
+                    <span class="action-text">
+
+                        <strong>
+                            Visualizar perfil
+                        </strong>
+
+                        <small>
+                            Veja como outras pessoas verão
+                        </small>
+
+                    </span>
+
+                    <span class="action-arrow" aria-hidden="true">
+                        →
+                    </span>
+
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Navegação inferior -->
+
+    <nav class="bottom-navigation" aria-label="Navegação principal">
+
+        <a href="dashboard.html" class="nav-item active" aria-current="page">
+
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+
+                <path d="m3 11 9-8 9 8"></path>
+                <path d="M5 10v11h14V10"></path>
+                <path d="M9 21v-7h6v7"></path>
+
+            </svg>
+
+            <span>Início</span>
+
+        </a>
+
+        <a href="perfil.html" class="nav-item">
+
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+
+                <circle cx="12" cy="8" r="4"></circle>
+
+                <path
+                    d="M4.5 21a7.5 7.5 0 0 1 15 0"
+                ></path>
+
+            </svg>
+
+            <span>Perfil</span>
+
+        </a>
+
+        <a href="conexoes.html" class="nav-item nav-main-action" aria-label="Abrir minhas conexões">
+
+            <span class="nav-main-icon">
+
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+
+                    <circle cx="8" cy="8" r="3"></circle>
+                    <circle cx="17" cy="8" r="3"></circle>
+
+                    <path
+                        d="M2.5 20a5.5 5.5 0 0 1 11 0"
+                    ></path>
+
+                    <path
+                        d="M11 20a6 6 0 0 1 11 0"
+                    ></path>
+
+                </svg>
+
+            </span>
+
+            <span>Conexões</span>
+
+        </a>
+
+        <a href="cadastrar-nfc.html" class="nav-item">
+
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+
+                <path
+                    d="M8 6a8.5 8.5 0 0 1 8 0"
+                ></path>
+
+                <path
+                    d="M9.8 9a5.5 5.5 0 0 1 4.4 0"
+                ></path>
+
+                <path
+                    d="M11 12a2.4 2.4 0 0 1 2 0"
+                ></path>
+
+                <circle
+                    cx="12"
+                    cy="15"
+                    r="1.4"
+                ></circle>
+
+            </svg>
+
+            <span>NFC</span>
+
+        </a>
+
+        <a href="configuracoes.html" class="nav-item">
+
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+
+                <circle
+                    cx="12"
+                    cy="12"
+                    r="3"
+                ></circle>
+
+                <path
+                    d="M19.4 15a7.8 7.8 0 0 0 .1-1 7.8 7.8 0 0 0-.1-1l2-1.5-2-3.5-2.4 1a8 8 0 0 0-1.7-1L15 5h-4l-.4 3a8 8 0 0 0-1.7 1l-2.4-1-2 3.5 2 1.5a7.8 7.8 0 0 0-.1 1 7.8 7.8 0 0 0 .1 1l-2 1.5 2 3.5 2.4-1a8 8 0 0 0 1.7 1l.4 3h4l.4-3a8 8 0 0 0 1.7-1l2.4 1 2-3.5-2.1-1.5Z"
+                ></path>
+
+            </svg>
+
+            <span>Ajustes</span>
+
+        </a>
+
+    </nav>
+
+    <script src="javascript/storage.js"></script>
+    <script src="javascript/api.js"></script>
+    <script src="javascript/dashboard.js"></script>
+
 </body>
+
 </html>
