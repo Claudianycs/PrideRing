@@ -1,0 +1,27 @@
+/* PRiDeRing MVP - ajustes responsivos compartilhados */
+@media(max-width:480px){
+body{
+overflow-x:hidden;
+}
+button,
+input,
+textarea,
+select{
+font-size:16px;
+}
+}
+@media(max-width:360px){
+body{
+font-size:14px;
+}
+}
+@media(prefers-reduced-motion:reduce){
+*,
+*::before,
+*::after{
+scroll-behavior:auto!important;
+animation-duration:.01ms!important;
+animation-iteration-count:1!important;
+transition-duration:.01ms!important;
+}
+}

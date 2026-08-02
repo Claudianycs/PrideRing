@@ -1,0 +1,10 @@
+/* cadastro.css - estilos específicos de cadastro.html */
+body{background:linear-gradient(180deg,#141321,#25214d);min-height:100vh;display:flex;justify-content:center;align-items:center;color:#fff;padding:20px}
+.card{width:100%;max-width:420px;background:rgba(255,255,255,.08);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.1);border-radius:24px;padding:28px}
+h1{text-align:center;margin-bottom:8px}
+p{text-align:center;color:#d0d0e8;margin-bottom:22px}
+input,select,textarea{width:100%;padding:14px;margin-bottom:14px;border:none;border-radius:12px;background:#ffffff14;color:#fff}
+input::placeholder,textarea::placeholder{color:#ddd}
+textarea{resize:none;height:90px}
+button{width:100%;padding:14px;border:none;border-radius:12px;background:#8b5cf6;color:#fff;font-weight:600;cursor:pointer}
+a{display:block;text-align:center;margin-top:18px;color:#bfa8ff;text-decoration:none}

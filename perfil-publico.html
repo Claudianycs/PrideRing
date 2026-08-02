@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="theme-color" content="#17142b">
+    <title>Perfil Público - PRiDeRing</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/perfil-publico.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+
+<body class="page-perfil-publico">
+    <main class="container">
+        <header class="brand">
+            <strong>PRiDeRing</strong>
+            <span>Perfil compartilhado com consentimento</span>
+        </header>
+
+        <section class="profile-card">
+            <div class="avatar" id="avatar">A</div>
+            <h1 id="name">Alex</h1>
+            <div class="pronoun" id="pronoun">ele/dele</div>
+            <p class="bio" id="bio">Tecnologia, conexões e respeito.</p>
+
+            <div class="tags" id="tags"></div>
+
+            <div class="contact-list" id="contactList"></div>
+
+            <p class="empty" id="emptyMessage">
+                Este perfil não possui informações públicas adicionais no momento.
+            </p>
+
+            <button class="primary" id="connectButton" type="button">Conectar</button>
+            <a class="secondary" href="dashboard.html">Voltar ao aplicativo</a>
+
+            <div class="notice" id="notice" role="status" aria-live="polite">
+                Solicitação de conexão registrada no MVP.
+            </div>
+        </section>
+
+        <p class="footer">
+            As informações exibidas foram selecionadas pelo proprietário do PRiDeRing.
+        </p>
+    </main>
+    <script src="javascript/storage.js"></script>
+    <script src="javascript/api.js"></script>
+    <script src="javascript/perfil-publico.js"></script>
+</body>
+
+</html>

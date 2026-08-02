@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#17142b">
+<title>Compartilhar - PRiDeRing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/global.css">
+<link rel="stylesheet" href="css/compartilhar.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body class="page-compartilhar">
+<header class="topbar">
+<a class="back" href="dashboard.html" aria-label="Voltar">←</a>
+<h1>Compartilhar</h1>
+<span aria-hidden="true"></span>
+</header>
+
+<main class="container">
+<section class="intro">
+<h2>Você decide o que aparece</h2>
+<p>Ative somente as informações que deseja disponibilizar quando alguém acessar seu perfil pelo PRiDeRing.</p>
+</section>
+
+<section class="profile-preview">
+<div class="avatar" id="avatar">A</div>
+<h3 id="previewName">Alex</h3>
+<div class="pronoun" id="previewPronoun">ele/dele</div>
+<div class="preview-data" id="previewData"></div>
+<p class="empty-preview" id="emptyPreview" hidden>Nenhuma informação adicional está habilitada.</p>
+</section>
+
+<section class="sharing-card">
+<h3>Informações compartilhadas</h3>
+<p>As preferências ficam salvas neste dispositivo para a demonstração do MVP.</p>
+
+<div class="option">
+<div class="option-info">
+<strong>Nome</strong>
+<span>Identificação principal do perfil</span>
+</div>
+<label class="switch">
+<input type="checkbox" data-key="name" checked>
+<span class="slider"></span>
+</label>
+</div>
+
+<div class="option">
+<div class="option-info">
+<strong>Pronome</strong>
+<span>Pronome informado no perfil</span>
+</div>
+<label class="switch">
+<input type="checkbox" data-key="pronoun" checked>
+<span class="slider"></span>
+</label>
+</div>
+
+<div class="option">
+<div class="option-info">
+<strong>Foto</strong>
+<span>Imagem escolhida para o perfil</span>
+</div>
+<label class="switch">
+<input type="checkbox" data-key="photo" checked>
+<span class="slider"></span>
+</label>
+</div>
+
+<div class="option">
+<div class="option-info">
+<strong>Bio</strong>
+<span>Descrição breve sobre você</span>
+</div>
+<label class="switch">
+<input type="checkbox" data-key="bio" checked>
+<span class="slider"></span>
+</label>
+</div>
+
+<div class="option">
+<div class="option-info">
+<strong>Instagram</strong>
+<span>Nome de usuário cadastrado</span>
+</div>
+<label class="switch">
+<input type="checkbox" data-key="instagram" checked>
+<span class="slider"></span>
+</label>
+</div>
+
+<div class="option">
+<div class="option-info">
+<strong>WhatsApp</strong>
+<span>Número de contato pessoal</span>
+</div>
+<label class="switch">
+<input type="checkbox" data-key="whatsapp">
+<span class="slider"></span>
+</label>
+</div>
+
+<div class="actions">
+<button class="primary" id="saveButton" type="button">Salvar escolhas</button>
+<button class="secondary" id="previewButton" type="button">Visualizar perfil</button>
+</div>
+
+<div class="status" id="status" role="status" aria-live="polite">
+Preferências salvas com sucesso.
+</div>
+
+<div class="link-box">
+<label for="publicLink">Link público do perfil</label>
+<div class="link-row">
+<input id="publicLink" type="text" readonly value="perfil-publico.html">
+<button class="copy" id="copyButton" type="button">Copiar</button>
+</div>
+</div>
+</section>
+
+<p class="helper">O perfil público deverá respeitar estas permissões. Em uma versão com backend, as escolhas seriam sincronizadas com a conta do usuário.</p>
+</main>
+
+<nav>
+<a href="dashboard.html">Início</a>
+<a href="perfil.html">Perfil</a>
+<a class="active" href="compartilhar.html">Compartilhar</a>
+</nav>
+<script src="javascript/storage.js"></script>
+<script src="javascript/api.js"></script>
+<script src="javascript/compartilhar.js"></script>
+</body>
+</html>

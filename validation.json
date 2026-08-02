@@ -1,0 +1,114 @@
+{
+  "login.html": {
+    "inline_style": false,
+    "inline_script": false,
+    "css_refs": [
+      "css/global.css",
+      "css/login.css",
+      "css/responsive.css"
+    ],
+    "js_refs": [
+      "javascript/storage.js",
+      "javascript/api.js",
+      "javascript/login.js"
+    ]
+  },
+  "cadastro.html": {
+    "inline_style": false,
+    "inline_script": false,
+    "css_refs": [
+      "css/global.css",
+      "css/cadastro.css",
+      "css/responsive.css"
+    ],
+    "js_refs": [
+      "javascript/storage.js",
+      "javascript/api.js",
+      "javascript/cadastro.js"
+    ]
+  },
+  "dashboard.html": {
+    "inline_style": false,
+    "inline_script": false,
+    "css_refs": [
+      "css/global.css",
+      "css/dashboard.css",
+      "css/responsive.css"
+    ],
+    "js_refs": [
+      "javascript/storage.js",
+      "javascript/api.js",
+      "javascript/dashboard.js"
+    ]
+  },
+  "perfil.html": {
+    "inline_style": false,
+    "inline_script": false,
+    "css_refs": [
+      "css/global.css",
+      "css/perfil.css",
+      "css/responsive.css"
+    ],
+    "js_refs": [
+      "javascript/storage.js",
+      "javascript/api.js",
+      "javascript/perfil.js"
+    ]
+  },
+  "cadastrar-nfc.html": {
+    "inline_style": false,
+    "inline_script": false,
+    "css_refs": [
+      "css/global.css",
+      "css/cadastrar-nfc.css",
+      "css/responsive.css"
+    ],
+    "js_refs": [
+      "javascript/storage.js",
+      "javascript/api.js",
+      "javascript/nfc.js"
+    ]
+  },
+  "compartilhar.html": {
+    "inline_style": false,
+    "inline_script": false,
+    "css_refs": [
+      "css/global.css",
+      "css/compartilhar.css",
+      "css/responsive.css"
+    ],
+    "js_refs": [
+      "javascript/storage.js",
+      "javascript/api.js",
+      "javascript/compartilhar.js"
+    ]
+  },
+  "perfil-publico.html": {
+    "inline_style": false,
+    "inline_script": false,
+    "css_refs": [
+      "css/global.css",
+      "css/perfil-publico.css",
+      "css/responsive.css"
+    ],
+    "js_refs": [
+      "javascript/storage.js",
+      "javascript/api.js",
+      "javascript/perfil-publico.js"
+    ]
+  },
+  "configuracoes.html": {
+    "inline_style": false,
+    "inline_script": false,
+    "css_refs": [
+      "css/global.css",
+      "css/configuracoes.css",
+      "css/responsive.css"
+    ],
+    "js_refs": [
+      "javascript/storage.js",
+      "javascript/api.js",
+      "javascript/configuracoes.js"
+    ]
+  }
+}

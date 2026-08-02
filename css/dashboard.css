@@ -1,0 +1,17 @@
+/* dashboard.css - estilos específicos de dashboard.html */
+body{background:linear-gradient(180deg,#141321,#25214d);color:#fff;min-height:100vh}
+header{padding:24px}
+h1{font-size:28px}
+.sub{color:#cfcfe8;margin-top:4px}
+.container{padding:20px 20px 90px}
+.card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(12px);border-radius:20px;padding:18px;margin-bottom:18px}
+.status{display:flex;justify-content:space-between;align-items:center}
+.badge{background:#22c55e;padding:6px 12px;border-radius:999px;font-size:12px}
+.item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.item:last-child{border:none}
+.switch{width:44px;height:24px;background:#8b5cf6;border-radius:20px;position:relative}
+.switch:before{content:"";position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;right:3px;top:3px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+.btn{display:flex;justify-content:center;align-items:center;height:90px;border-radius:18px;background:rgba(255,255,255,.08);color:#fff;text-decoration:none;font-weight:600}
+nav{position:fixed;left:0;right:0;bottom:0;height:70px;background:#1b1833;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-around;align-items:center}
+nav a{color:#ddd;text-decoration:none;font-size:13px}

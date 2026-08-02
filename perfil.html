@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Meu Perfil - PRiDeRing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/global.css">
+<link rel="stylesheet" href="css/perfil.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body class="page-perfil">
+<header>
+<a class="back" href="dashboard.html" aria-label="Voltar">←</a>
+<h1>Meu Perfil</h1>
+<span></span>
+</header>
+
+<main class="container">
+<section class="profile-card">
+<div class="avatar-wrap">
+<div class="avatar" id="avatar">A</div>
+<button class="photo-button" type="button" id="photoButton" aria-label="Alterar foto">+</button>
+<input type="file" id="photoInput" accept="image/*" hidden>
+</div>
+<h2 id="previewName">Alex</h2>
+<p id="previewPronoun">ele/dele</p>
+</section>
+
+<section class="form-card">
+<form id="profileForm">
+<div class="field">
+<label for="name">Nome</label>
+<input id="name" type="text" value="Alex" placeholder="Digite seu nome" required>
+</div>
+
+<div class="field">
+<label for="pronoun">Pronome</label>
+<input id="pronoun" type="text" value="ele/dele" placeholder="Ex.: ela/dela">
+</div>
+
+<div class="field">
+<label for="bio">Bio</label>
+<textarea id="bio" placeholder="Conte um pouco sobre você">Tecnologia, conexões e respeito.</textarea>
+</div>
+
+<div class="field">
+<label for="instagram">Instagram</label>
+<input id="instagram" type="text" value="@alex" placeholder="@usuario">
+</div>
+
+<div class="field">
+<label for="whatsapp">WhatsApp</label>
+<input id="whatsapp" type="tel" placeholder="(00) 00000-0000">
+</div>
+
+<button class="save" type="submit">Salvar alterações</button>
+<div class="message" id="message">Perfil atualizado com sucesso.</div>
+</form>
+</section>
+</main>
+
+<nav>
+<a href="dashboard.html">Início</a>
+<a class="active" href="perfil.html">Perfil</a>
+<a href="configuracoes.html">Config.</a>
+</nav>
+<script src="javascript/storage.js"></script>
+<script src="javascript/api.js"></script>
+<script src="javascript/perfil.js"></script>
+</body>
+</html>
