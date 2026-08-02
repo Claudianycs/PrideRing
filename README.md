@@ -21,3 +21,5 @@ Este pacote contém as páginas HTML com CSS e JavaScript externos.
 Abra a pasta no VS Code e execute com a extensão Live Server.
 Para testar Web NFC, use um navegador/dispositivo compatível e uma origem segura
 (HTTPS). A simulação do MVP continua disponível na página de cadastro NFC.
+
+Clique aqui para acessar o site: https://claudianycs.github.io/PrideRing/
