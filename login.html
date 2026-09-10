@@ -20,18 +20,20 @@
         </div>
 
         <p>Entre na sua conta</p>
-        <form>
-            <input type="email" placeholder="E-mail" required>
-            <input type="password" placeholder="Senha" required>
-            <button type="submit">Entrar</button>
+        <form id="loginForm">
+            <input id="email" type="email" placeholder="E-mail" required>
+            <input id="password" type="password" placeholder="Senha" required>
+            <button type="submit" id="submitButton">Entrar</button>
         </form>
+        <div class="notice" id="notice" role="status" aria-live="polite"></div>
         <div class="links">
             <a href="cadastro.html">Criar conta</a>
             <a href="#">Esqueci a senha</a>
         </div>
     </div>
-    <script src="javascript/storage.js"></script>
-    <script src="javascript/api.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script src="javascript/supabaseClient.js"></script>
+    <script src="javascript/auth.js"></script>
     <script src="javascript/login.js"></script>
 </body>
 

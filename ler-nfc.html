@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="theme-color" content="#17142b">
+    <title>Ler NFC - PRiDeRing</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/ler-nfc.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+
+<body class="page-ler-nfc">
+    <header class="topbar">
+        <a class="back" href="dashboard.html" aria-label="Voltar">←</a>
+        <h1>Ler NFC</h1>
+        <span aria-hidden="true"></span>
+    </header>
+
+    <main class="container">
+        <section class="intro">
+            <h2>Escaneie um anel</h2>
+            <p>Aproxime o celular do PRiDeRing de outra pessoa para reconhecer a tag e abrir o perfil compartilhado.</p>
+        </section>
+
+        <section class="nfc-card">
+            <div class="scanner" aria-hidden="true">
+                <span class="wave one"></span>
+                <span class="wave two"></span>
+                <span class="wave three"></span>
+                <div class="nfc-symbol">N</div>
+            </div>
+
+            <h3 class="status-title" id="scannerStatusTitle">Pronto para escanear</h3>
+            <p class="status-text" id="scannerStatusText">Toque no botão e aproxime o anel do celular.</p>
+
+            <div class="details" id="scannerResult">
+                <div class="detail-row">
+                    <span class="detail-label">Identificador</span>
+                    <strong class="detail-value" id="scannerSerialNumber">—</strong>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Tipo</span>
+                    <strong class="detail-value" id="scannerRecordType">—</strong>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Conteúdo</span>
+                    <strong class="detail-value" id="scannerRecordData">—</strong>
+                </div>
+            </div>
+
+            <button class="primary-button" id="scannerButton" type="button">Reconhecer NFC</button>
+            <button class="secondary-button hidden" id="cancelScannerButton" type="button">Cancelar leitura</button>
+            <button class="secondary-button hidden" id="simulateScannerButton" type="button">Simular leitura para demonstração</button>
+
+            <div class="notice" id="scannerMessage" role="status" aria-live="polite"></div>
+        </section>
+
+        <p class="helper">
+            Ao reconhecer a tag, você será encaminhado automaticamente para o perfil público vinculado a ela.
+            Quer vincular o seu próprio anel? <a href="cadastrar-nfc.html">Cadastre aqui</a>.
+        </p>
+    </main>
+
+    <nav>
+        <a href="dashboard.html">Início</a>
+        <a href="conexoes.html">Conexões</a>
+        <a class="active" href="ler-nfc.html">Ler NFC</a>
+        <a href="cadastrar-nfc.html">Meu NFC</a>
+    </nav>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script src="javascript/supabaseClient.js"></script>
+    <script src="javascript/auth.js"></script>
+    <script src="javascript/scanner.js"></script>
+</body>
+
+</html>

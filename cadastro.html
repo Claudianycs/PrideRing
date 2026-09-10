@@ -18,18 +18,20 @@
         <h1>Criar Conta</h1>
         <p>Bem-vindo ao PRiDeRing</p>
         <form id='cadastro'>
-            <input type='text' placeholder='Nome completo' required>
-            <input type='text' placeholder='Pronome (opcional)'>
-            <input type='email' placeholder='E-mail' required>
-            <input type='password' placeholder='Senha' required>
-            <input type='password' placeholder='Confirmar senha' required>
-            <textarea placeholder='Bio (opcional)'></textarea>
-            <button type='submit'>Cadastrar</button>
+            <input id='name' type='text' placeholder='Nome completo' required>
+            <input id='pronoun' type='text' placeholder='Pronome (opcional)'>
+            <input id='email' type='email' placeholder='E-mail' required>
+            <input id='password' type='password' placeholder='Senha' required minlength="6">
+            <input id='confirmPassword' type='password' placeholder='Confirmar senha' required minlength="6">
+            <textarea id='bio' placeholder='Bio (opcional)'></textarea>
+            <button type='submit' id='submitButton'>Cadastrar</button>
         </form>
+        <div class="notice" id="notice" role="status" aria-live="polite"></div>
         <a href='login.html'>Já possui uma conta? Entrar</a>
     </div>
-    <script src="javascript/storage.js"></script>
-    <script src="javascript/api.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script src="javascript/supabaseClient.js"></script>
+    <script src="javascript/auth.js"></script>
     <script src="javascript/cadastro.js"></script>
 </body>
 

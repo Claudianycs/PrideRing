@@ -349,12 +349,23 @@
     color: #a7f3d0;
 }
 
+.status-disconnected {
+    border: 1px solid rgba(245, 158, 11, .25);
+    background: rgba(245, 158, 11, .13);
+    color: #fde68a;
+}
+
 .status-dot {
     width: 7px;
     height: 7px;
     border-radius: 50%;
     background: var(--dashboard-success);
     box-shadow: 0 0 0 4px rgba(41, 217, 128, .10);
+}
+
+.status-disconnected .status-dot {
+    background: #f59e0b;
+    box-shadow: 0 0 0 4px rgba(245, 158, 11, .10);
 }
 
 .ring-card-footer {

@@ -35,7 +35,7 @@
 
 <section class="sharing-card">
 <h3>Informações compartilhadas</h3>
-<p>As preferências ficam salvas neste dispositivo para a demonstração do MVP.</p>
+<p>As preferências ficam salvas na sua conta e valem para qualquer pessoa que acessar seu perfil público.</p>
 
 <div class="option">
 <div class="option-info">
@@ -121,7 +121,7 @@ Preferências salvas com sucesso.
 </div>
 </section>
 
-<p class="helper">O perfil público deverá respeitar estas permissões. Em uma versão com backend, as escolhas seriam sincronizadas com a conta do usuário.</p>
+<p class="helper">O perfil público respeita estas permissões automaticamente para qualquer pessoa que ler o seu anel ou abrir o link.</p>
 </main>
 
 <nav>
@@ -129,8 +129,9 @@ Preferências salvas com sucesso.
 <a href="perfil.html">Perfil</a>
 <a class="active" href="compartilhar.html">Compartilhar</a>
 </nav>
-<script src="javascript/storage.js"></script>
-<script src="javascript/api.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="javascript/supabaseClient.js"></script>
+<script src="javascript/auth.js"></script>
 <script src="javascript/compartilhar.js"></script>
 </body>
 </html>

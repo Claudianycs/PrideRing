@@ -41,8 +41,10 @@ document.getElementById("logout").onclick=()=>{
 
 if(confirm("Deseja sair da conta?")){
 
-window.location="login.html";
+signOutAndRedirect();
 
 }
 
 };
+
+requireSession();

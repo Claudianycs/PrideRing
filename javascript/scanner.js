@@ -1,5 +1,6 @@
 // scanner.js - PRiDeRing MVP
-// Responsável por reconhecer uma tag NFC e encaminhar o usuário ao perfil público.
+// Responsável por reconhecer uma tag NFC, localizar a conta dona do anel
+// no banco de dados e encaminhar o usuário ao perfil público correspondente.
 
 document.addEventListener("DOMContentLoaded", () => {
     const scanButton = document.getElementById("scannerButton");
@@ -61,6 +62,9 @@ async function startScanner() {
         });
 
         reader.addEventListener("readingerror", () => {
+            scannerActive = false;
+            setScannerButtonState(false);
+
             setScannerStatus(
                 "Falha na leitura",
                 "Afaste o anel e tente aproximá-lo novamente."
@@ -75,15 +79,10 @@ async function startScanner() {
         reader.addEventListener("reading", event => {
             const result = createScannerResult(event);
 
-            saveScannerHistory(result);
-            showScannerResult(result);
-
             scannerActive = false;
             setScannerButtonState(false);
 
-            setTimeout(() => {
-                openPublicProfile(result);
-            }, 1200);
+            resolveAndShow(result);
         });
 
     } catch (error) {
@@ -133,37 +132,43 @@ function stopScanner() {
     );
 }
 
-function simulateScanner() {
+async function simulateScanner() {
     clearScannerMessage();
 
-    const linkedRing = JSON.parse(
-        localStorage.getItem("prideringNfc") || "null"
-    );
+    const session = await getSession();
+    let serialNumber = generateScannerId();
+
+    if (session) {
+        const { data: ownTag } = await supabaseClient
+            .from("nfc_tags")
+            .select("serial_number")
+            .eq("user_id", session.user.id)
+            .maybeSingle();
+
+        if (ownTag) {
+            serialNumber = ownTag.serial_number;
+        }
+    }
 
     const simulatedResult = {
-        serialNumber: linkedRing?.serialNumber || generateScannerId(),
-        recordType: linkedRing?.recordType || "NDEF URL",
-        data: linkedRing?.data || "perfil-publico.html",
+        serialNumber,
+        recordType: "NDEF URL",
+        data: "Leitura simulada",
         scannedAt: new Date().toISOString(),
         simulated: true
     };
 
     setScannerStatus(
-        "NFC reconhecido",
-        "Tag simulada identificada com sucesso."
+        "Simulando leitura...",
+        "Buscando o perfil vinculado a esta tag."
     );
-
-    saveScannerHistory(simulatedResult);
-    showScannerResult(simulatedResult);
 
     showScannerMessage(
         "Reconhecimento simulado concluído.",
         "warning"
     );
 
-    setTimeout(() => {
-        openPublicProfile(simulatedResult);
-    }, 1200);
+    await resolveAndShow(simulatedResult);
 }
 
 function createScannerResult(event) {
@@ -172,7 +177,7 @@ function createScannerResult(event) {
     return {
         serialNumber: event.serialNumber || generateScannerId(),
         recordType: record?.recordType || "NDEF",
-        data: record ? decodeScannerRecord(record) : "perfil-publico.html",
+        data: record ? decodeScannerRecord(record) : "Tag sem registros",
         scannedAt: new Date().toISOString(),
         simulated: false
     };
@@ -181,18 +186,88 @@ function createScannerResult(event) {
 function decodeScannerRecord(record) {
     try {
         if (!record?.data) {
-            return "perfil-publico.html";
+            return "Tag sem registros";
         }
 
         const decoder = new TextDecoder(record.encoding || "utf-8");
         const value = decoder.decode(record.data).trim();
 
-        return value || "perfil-publico.html";
+        return value || "Tag sem registros";
 
     } catch (error) {
         console.error("Erro ao decodificar registro NFC:", error);
-        return "perfil-publico.html";
+        return "Tag sem registros";
     }
+}
+
+async function findTagOwner(serialNumber) {
+    const { data: tag } = await supabaseClient
+        .from("nfc_tags")
+        .select("user_id, ring_name")
+        .eq("serial_number", serialNumber)
+        .maybeSingle();
+
+    if (!tag) {
+        return null;
+    }
+
+    const { data: profile } = await supabaseClient
+        .from("profiles")
+        .select("name")
+        .eq("id", tag.user_id)
+        .maybeSingle();
+
+    return {
+        userId: tag.user_id,
+        ringName: tag.ring_name,
+        name: profile?.name || "Perfil PRiDeRing"
+    };
+}
+
+async function maybeRecordConnection(targetId, targetName) {
+    const session = await getSession();
+
+    if (!session || session.user.id === targetId) {
+        return;
+    }
+
+    await supabaseClient.from("connections").insert({
+        owner_id: session.user.id,
+        target_id: targetId,
+        target_name: targetName
+    });
+}
+
+async function resolveAndShow(result) {
+    const owner = await findTagOwner(result.serialNumber);
+
+    saveScannerHistory(result);
+    showScannerResult(result);
+
+    if (owner) {
+        setScannerStatus(
+            "NFC reconhecido",
+            `Perfil de ${owner.name} identificado.`
+        );
+
+        await maybeRecordConnection(owner.userId, owner.name);
+
+        setTimeout(() => {
+            window.location.href = "perfil-publico.html?u=" + owner.userId;
+        }, 1200);
+
+        return;
+    }
+
+    setScannerStatus(
+        "Tag não vinculada",
+        "Esta tag não está associada a nenhum perfil PRiDeRing."
+    );
+
+    showScannerMessage(
+        "Peça para a pessoa vincular o anel dela em \"Cadastrar NFC\".",
+        "warning"
+    );
 }
 
 function showScannerResult(result) {
@@ -205,38 +280,6 @@ function showScannerResult(result) {
     if (resultBox) {
         resultBox.style.display = "block";
     }
-}
-
-function openPublicProfile(result) {
-    const fallbackPage = "perfil-publico.html";
-    const target = normalizeScannerTarget(result.data, fallbackPage);
-
-    window.location.href = target;
-}
-
-function normalizeScannerTarget(value, fallbackPage) {
-    if (!value) {
-        return fallbackPage;
-    }
-
-    const trimmedValue = String(value).trim();
-
-    if (
-        trimmedValue.startsWith("http://") ||
-        trimmedValue.startsWith("https://")
-    ) {
-        return trimmedValue;
-    }
-
-    if (
-        trimmedValue.endsWith(".html") ||
-        trimmedValue.startsWith("./") ||
-        trimmedValue.startsWith("../")
-    ) {
-        return trimmedValue;
-    }
-
-    return fallbackPage;
 }
 
 function saveScannerHistory(result) {
@@ -252,16 +295,6 @@ function saveScannerHistory(result) {
         "prideringScannerHistory",
         JSON.stringify(limitedHistory)
     );
-}
-
-function getScannerHistory() {
-    return JSON.parse(
-        localStorage.getItem("prideringScannerHistory") || "[]"
-    );
-}
-
-function clearScannerHistory() {
-    localStorage.removeItem("prideringScannerHistory");
 }
 
 function setScannerStatus(title, text) {

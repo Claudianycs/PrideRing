@@ -1,31 +1,15 @@
 // compartilhar.js - comportamento de compartilhar.html
 
-const defaultProfile={
-name:"Alex",
-pronoun:"ele/dele",
-bio:"Tecnologia, conexões e respeito.",
-instagram:"@alex",
-whatsapp:""
+const columnByKey={
+name:"share_name",
+pronoun:"share_pronoun",
+bio:"share_bio",
+instagram:"share_instagram",
+whatsapp:"share_whatsapp"
 };
 
-const defaultPreferences={
-name:true,
-pronoun:true,
-photo:true,
-bio:true,
-instagram:true,
-whatsapp:false
-};
-
-const profile={
-...defaultProfile,
-...(JSON.parse(localStorage.getItem("prideringProfile")||"null")||{})
-};
-
-let preferences={
-...defaultPreferences,
-...(JSON.parse(localStorage.getItem("prideringSharing")||"null")||{})
-};
+let profile={};
+let userId=null;
 
 const inputs=[...document.querySelectorAll("[data-key]")];
 const previewName=document.getElementById("previewName");
@@ -51,7 +35,7 @@ return element;
 }
 
 function updatePreview(){
-preferences=currentPreferences();
+const preferences=currentPreferences();
 
 previewName.textContent=preferences.name?(profile.name||"Seu nome"):"Perfil PRiDeRing";
 previewPronoun.textContent=preferences.pronoun?(profile.pronoun||"Pronome não informado"):"";
@@ -72,25 +56,22 @@ items.forEach(item=>previewData.appendChild(createChip(item)));
 emptyPreview.hidden=items.length>0;
 }
 
-function loadPreferences(){
-inputs.forEach(input=>{
-input.checked=Boolean(preferences[input.dataset.key]);
-input.addEventListener("change",updatePreview);
+async function savePreferences(){
+const preferences=currentPreferences();
+const update={};
+Object.entries(columnByKey).forEach(([key,column])=>{
+update[column]=Boolean(preferences[key]);
 });
-updatePreview();
-}
 
-function savePreferences(){
-preferences=currentPreferences();
-localStorage.setItem("prideringSharing",JSON.stringify(preferences));
+await supabaseClient.from("sharing_preferences").update(update).eq("user_id",userId);
+
 status.classList.add("show");
 setTimeout(()=>status.classList.remove("show"),2500);
 }
 
 async function copyLink(){
 try{
-const fullLink=new URL(publicLink.value,window.location.href).href;
-await navigator.clipboard.writeText(fullLink);
+await navigator.clipboard.writeText(publicLink.value);
 document.getElementById("copyButton").textContent="Copiado";
 setTimeout(()=>document.getElementById("copyButton").textContent="Copiar",1800);
 }catch(error){
@@ -100,10 +81,32 @@ document.execCommand("copy");
 }
 
 document.getElementById("saveButton").addEventListener("click",savePreferences);
-document.getElementById("previewButton").addEventListener("click",()=>{
-savePreferences();
-window.location.href="perfil-publico.html";
+document.getElementById("previewButton").addEventListener("click",async()=>{
+await savePreferences();
+window.location.href="perfil-publico.html?u="+userId;
 });
 document.getElementById("copyButton").addEventListener("click",copyLink);
 
-loadPreferences();
+async function init(){
+const session=await requireSession();
+if(!session)return;
+userId=session.user.id;
+
+const [{data:profileData},{data:sharing}]=await Promise.all([
+supabaseClient.from("profiles").select("*").eq("id",userId).single(),
+supabaseClient.from("sharing_preferences").select("*").eq("user_id",userId).single()
+]);
+
+profile=profileData||{};
+publicLink.value=new URL("perfil-publico.html?u="+userId,window.location.href).href;
+
+inputs.forEach(input=>{
+const key=input.dataset.key;
+input.checked=key==="photo"?true:Boolean(sharing?.[columnByKey[key]]);
+input.addEventListener("change",updatePreview);
+});
+
+updatePreview();
+}
+
+init();

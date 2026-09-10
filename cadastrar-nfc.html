@@ -67,16 +67,18 @@
             <div class="notice" id="notice" role="status" aria-live="polite"></div>
         </section>
 
-        <p class="helper">No MVP, o vínculo é salvo localmente neste navegador. A integração com uma API e autenticação poderá ser adicionada posteriormente.</p>
+        <p class="helper">O vínculo fica salvo na sua conta PRiDeRing e vale para qualquer celular que ler este anel.</p>
     </main>
 
     <nav>
         <a href="dashboard.html">Início</a>
         <a href="perfil.html">Perfil</a>
         <a class="active" href="cadastrar-nfc.html">NFC</a>
+        <a href="ler-nfc.html">Ler NFC</a>
     </nav>
-    <script src="javascript/storage.js"></script>
-    <script src="javascript/api.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script src="javascript/supabaseClient.js"></script>
+    <script src="javascript/auth.js"></script>
     <script src="javascript/nfc.js"></script>
 </body>
 

@@ -534,6 +534,44 @@
 
                 </a>
 
+                <a class="action-card" href="ler-nfc.html">
+
+                    <span class="action-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <path
+                                d="M8 6a8.5 8.5 0 0 1 8 0M9.8 9a5.5 5.5 0 0 1 4.4 0M11 12a2.4 2.4 0 0 1 2 0"
+                            ></path>
+
+                            <circle
+                                cx="12"
+                                cy="15"
+                                r="1.4"
+                            ></circle>
+
+                        </svg>
+
+                    </span>
+
+                    <span class="action-text">
+
+                        <strong>
+                            Ler NFC
+                        </strong>
+
+                        <small>
+                            Escaneie o anel de outra pessoa
+                        </small>
+
+                    </span>
+
+                    <span class="action-arrow" aria-hidden="true">
+                        →
+                    </span>
+
+                </a>
+
                 <a class="action-card" href="perfil.html">
 
                     <span class="action-icon">
@@ -606,7 +644,7 @@
 
                 </a>
 
-                <a class="action-card" href="perfil-publico.html">
+                <a class="action-card" href="perfil-publico.html" id="viewProfileLink">
 
                     <span class="action-icon">
 
@@ -759,8 +797,9 @@
 
     </nav>
 
-    <script src="javascript/storage.js"></script>
-    <script src="javascript/api.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script src="javascript/supabaseClient.js"></script>
+    <script src="javascript/auth.js"></script>
     <script src="javascript/dashboard.js"></script>
 
 </body>

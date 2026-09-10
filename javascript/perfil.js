@@ -3,12 +3,17 @@
 const form=document.getElementById("profileForm");
 const nameInput=document.getElementById("name");
 const pronounInput=document.getElementById("pronoun");
+const bioInput=document.getElementById("bio");
+const instagramInput=document.getElementById("instagram");
+const whatsappInput=document.getElementById("whatsapp");
 const previewName=document.getElementById("previewName");
 const previewPronoun=document.getElementById("previewPronoun");
 const avatar=document.getElementById("avatar");
 const message=document.getElementById("message");
 const photoButton=document.getElementById("photoButton");
 const photoInput=document.getElementById("photoInput");
+
+let userId=null;
 
 nameInput.addEventListener("input",()=>{
 const value=nameInput.value.trim();
@@ -35,28 +40,48 @@ avatar.textContent="";
 reader.readAsDataURL(file);
 });
 
-form.addEventListener("submit",event=>{
+form.addEventListener("submit",async event=>{
 event.preventDefault();
+if(!userId)return;
+
 const profile={
 name:nameInput.value.trim(),
 pronoun:pronounInput.value.trim(),
-bio:document.getElementById("bio").value.trim(),
-instagram:document.getElementById("instagram").value.trim(),
-whatsapp:document.getElementById("whatsapp").value.trim()
+bio:bioInput.value.trim(),
+instagram:instagramInput.value.trim(),
+whatsapp:whatsappInput.value.trim()
 };
-localStorage.setItem("prideringProfile",JSON.stringify(profile));
+
+const {error}=await supabaseClient.from("profiles").update(profile).eq("id",userId);
+
+if(error){
+message.textContent="Não foi possível salvar. Tente novamente.";
+message.style.display="block";
+setTimeout(()=>message.style.display="none",2500);
+return;
+}
+
+message.textContent="Perfil atualizado com sucesso.";
 message.style.display="block";
 setTimeout(()=>message.style.display="none",2500);
 });
 
-const savedProfile=JSON.parse(localStorage.getItem("prideringProfile")||"null");
-if(savedProfile){
-nameInput.value=savedProfile.name||"";
-pronounInput.value=savedProfile.pronoun||"";
-document.getElementById("bio").value=savedProfile.bio||"";
-document.getElementById("instagram").value=savedProfile.instagram||"";
-document.getElementById("whatsapp").value=savedProfile.whatsapp||"";
-previewName.textContent=savedProfile.name||"Seu nome";
-previewPronoun.textContent=savedProfile.pronoun||"Pronome não informado";
-avatar.textContent=(savedProfile.name?.charAt(0)||"P").toUpperCase();
+async function init(){
+const session=await requireSession();
+if(!session)return;
+userId=session.user.id;
+
+const {data:profile}=await supabaseClient.from("profiles").select("*").eq("id",userId).single();
+if(!profile)return;
+
+nameInput.value=profile.name||"";
+pronounInput.value=profile.pronoun||"";
+bioInput.value=profile.bio||"";
+instagramInput.value=profile.instagram||"";
+whatsappInput.value=profile.whatsapp||"";
+previewName.textContent=profile.name||"Seu nome";
+previewPronoun.textContent=profile.pronoun||"Pronome não informado";
+avatar.textContent=(profile.name?.charAt(0)||"P").toUpperCase();
 }
+
+init();

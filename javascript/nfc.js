@@ -14,6 +14,7 @@ const ringName=document.getElementById("ringName");
 const notice=document.getElementById("notice");
 
 let detectedTag=null;
+let userId=null;
 
 function showNotice(message,type){
 notice.textContent=message;
@@ -97,38 +98,58 @@ function simulateScan(){
 const randomId="04:"+Array.from({length:7},()=>Math.floor(Math.random()*256).toString(16).padStart(2,"0").toUpperCase()).join(":");
 showDetectedTag({
 serialNumber:randomId,
-recordType:"NDEF URL",
-data:"https://pridering.app/p/demo"
+recordType:"NDEF",
+data:"Tag simulada para demonstração"
 });
 showNotice("Leitura simulada concluída para demonstração do MVP.","warning");
 }
 
-function saveLink(){
-if(!detectedTag)return;
+async function saveLink(){
+if(!detectedTag||!userId)return;
 const name=ringName.value.trim();
 if(!name){
 showNotice("Informe um nome para o anel.","error");
 ringName.focus();
 return;
 }
-const linkedRing={
-name,
-serialNumber:detectedTag.serialNumber,
-recordType:detectedTag.recordType,
-data:detectedTag.data,
-linkedAt:new Date().toISOString()
-};
-localStorage.setItem("prideringNfc",JSON.stringify(linkedRing));
-linkButton.textContent="Anel vinculado";
+
 linkButton.disabled=true;
+
+const {data:existing}=await supabaseClient
+.from("nfc_tags")
+.select("user_id")
+.eq("serial_number",detectedTag.serialNumber)
+.maybeSingle();
+
+if(existing&&existing.user_id!==userId){
+showNotice("Esta tag já está vinculada a outra conta.","error");
+linkButton.disabled=false;
+return;
+}
+
+const {error}=await supabaseClient.from("nfc_tags").upsert({
+serial_number:detectedTag.serialNumber,
+user_id:userId,
+ring_name:name,
+record_type:detectedTag.recordType
+});
+
+if(error){
+showNotice("Não foi possível vincular o anel. Tente novamente.","error");
+linkButton.disabled=false;
+return;
+}
+
+linkButton.textContent="Anel vinculado";
 removeButton.classList.remove("hidden");
 statusTitle.textContent="Anel vinculado";
-statusText.textContent="O PRiDeRing está associado ao perfil salvo neste dispositivo.";
+statusText.textContent="O PRiDeRing está associado ao seu perfil.";
 showNotice("Anel NFC vinculado com sucesso.","success");
 }
 
-function removeLink(){
-localStorage.removeItem("prideringNfc");
+async function removeLink(){
+if(!userId)return;
+await supabaseClient.from("nfc_tags").delete().eq("user_id",userId);
 detectedTag=null;
 details.style.display="none";
 serialNumber.textContent="—";
@@ -139,19 +160,29 @@ linkButton.disabled=true;
 removeButton.classList.add("hidden");
 statusTitle.textContent="Pronto para ler";
 statusText.textContent="Toque no botão e aproxime o anel do celular.";
-showNotice("Vínculo removido deste dispositivo.","success");
+showNotice("Vínculo removido da sua conta.","success");
 }
 
-function loadLinkedRing(){
-const saved=JSON.parse(localStorage.getItem("prideringNfc")||"null");
-if(!saved)return;
-ringName.value=saved.name||"Meu PRiDeRing";
-showDetectedTag(saved);
+async function loadLinkedRing(){
+const {data:tag}=await supabaseClient
+.from("nfc_tags")
+.select("*")
+.eq("user_id",userId)
+.maybeSingle();
+
+if(!tag)return;
+
+ringName.value=tag.ring_name||"Meu PRiDeRing";
+showDetectedTag({
+serialNumber:tag.serial_number,
+recordType:tag.record_type||"NDEF",
+data:"Vinculado ao seu perfil"
+});
 linkButton.textContent="Anel vinculado";
 linkButton.disabled=true;
 removeButton.classList.remove("hidden");
 statusTitle.textContent="Anel vinculado";
-statusText.textContent="Este NFC já está associado ao perfil salvo no dispositivo.";
+statusText.textContent="Este NFC já está associado ao seu perfil.";
 }
 
 scanButton.addEventListener("click",scanNfc);
@@ -163,4 +194,11 @@ if(!("NDEFReader" in window)){
 simulateButton.classList.remove("hidden");
 }
 
-loadLinkedRing();
+async function init(){
+const session=await requireSession();
+if(!session)return;
+userId=session.user.id;
+await loadLinkedRing();
+}
+
+init();

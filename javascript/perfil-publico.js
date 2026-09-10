@@ -1,32 +1,5 @@
 // perfil-publico.js - comportamento de perfil-publico.html
 
-const defaultProfile={
-name:"Alex",
-pronoun:"ele/dele",
-bio:"Tecnologia, conexões e respeito.",
-instagram:"@alex",
-whatsapp:""
-};
-
-const defaultPreferences={
-name:true,
-pronoun:true,
-photo:true,
-bio:true,
-instagram:true,
-whatsapp:false
-};
-
-const profile={
-...defaultProfile,
-...(JSON.parse(localStorage.getItem("prideringProfile")||"null")||{})
-};
-
-const preferences={
-...defaultPreferences,
-...(JSON.parse(localStorage.getItem("prideringSharing")||"null")||{})
-};
-
 const avatar=document.getElementById("avatar");
 const nameElement=document.getElementById("name");
 const pronounElement=document.getElementById("pronoun");
@@ -35,6 +8,7 @@ const tags=document.getElementById("tags");
 const contactList=document.getElementById("contactList");
 const emptyMessage=document.getElementById("emptyMessage");
 const notice=document.getElementById("notice");
+const connectButton=document.getElementById("connectButton");
 
 function hideWhenNotAllowed(element,allowed,value){
 if(allowed&&value){
@@ -77,45 +51,94 @@ link.append(info,arrow);
 contactList.appendChild(link);
 }
 
-hideWhenNotAllowed(nameElement,preferences.name,profile.name);
-hideWhenNotAllowed(pronounElement,preferences.pronoun,profile.pronoun);
-hideWhenNotAllowed(bioElement,preferences.bio,profile.bio);
+function renderProfile(profile,preferences){
+tags.innerHTML="";
+contactList.innerHTML="";
 
-if(preferences.photo){
+hideWhenNotAllowed(nameElement,preferences.share_name,profile.name);
+hideWhenNotAllowed(pronounElement,preferences.share_pronoun,profile.pronoun);
+hideWhenNotAllowed(bioElement,preferences.share_bio,profile.bio);
+
 avatar.textContent=(profile.name?.charAt(0)||"P").toUpperCase();
-}else{
-avatar.style.display="none";
-}
 
-if(preferences.instagram&&profile.instagram){
+if(preferences.share_instagram&&profile.instagram){
 createTag("Instagram");
 const username=profile.instagram.replace(/^@/,"");
 createContact("Instagram",profile.instagram,"https://instagram.com/"+username);
 }
 
-if(preferences.whatsapp&&profile.whatsapp){
+if(preferences.share_whatsapp&&profile.whatsapp){
 createTag("WhatsApp");
 const number=profile.whatsapp.replace(/\D/g,"");
 createContact("WhatsApp",profile.whatsapp,"https://wa.me/55"+number);
 }
 
 const hasAdditionalInfo=
-(preferences.bio&&profile.bio)||
-(preferences.instagram&&profile.instagram)||
-(preferences.whatsapp&&profile.whatsapp);
+(preferences.share_bio&&profile.bio)||
+(preferences.share_instagram&&profile.instagram)||
+(preferences.share_whatsapp&&profile.whatsapp);
 
-if(!hasAdditionalInfo){
+emptyMessage.style.display=hasAdditionalInfo?"none":"block";
+}
+
+function showNotFound(message){
+nameElement.textContent="Perfil não encontrado";
+pronounElement.style.display="none";
+bioElement.style.display="none";
+avatar.style.display="none";
+connectButton.style.display="none";
+emptyMessage.textContent=message;
 emptyMessage.style.display="block";
 }
 
-document.getElementById("connectButton").addEventListener("click",()=>{
-const connection={
-profileName:preferences.name?profile.name:"Perfil PRiDeRing",
-createdAt:new Date().toISOString()
-};
-const connections=JSON.parse(localStorage.getItem("prideringConnections")||"[]");
-connections.push(connection);
-localStorage.setItem("prideringConnections",JSON.stringify(connections));
+function showNotice(message){
+notice.textContent=message;
 notice.classList.add("show");
 setTimeout(()=>notice.classList.remove("show"),2500);
+}
+
+async function init(){
+const params=new URLSearchParams(window.location.search);
+const targetId=params.get("u");
+
+if(!targetId){
+showNotFound("Abra este link a partir do seu anel PRiDeRing ou do app.");
+return;
+}
+
+const [{data:profile},{data:preferences}]=await Promise.all([
+supabaseClient.from("profiles").select("*").eq("id",targetId).maybeSingle(),
+supabaseClient.from("sharing_preferences").select("*").eq("user_id",targetId).maybeSingle()
+]);
+
+if(!profile){
+showNotFound("Este perfil não existe mais.");
+return;
+}
+
+renderProfile(profile,preferences||{});
+
+const session=await getSession();
+
+if(session&&session.user.id===targetId){
+connectButton.style.display="none";
+return;
+}
+
+connectButton.addEventListener("click",async()=>{
+if(!session){
+window.location.href="login.html";
+return;
+}
+
+await supabaseClient.from("connections").insert({
+owner_id:session.user.id,
+target_id:targetId,
+target_name:profile.name
 });
+
+showNotice("Conexão registrada com sucesso.");
+});
+}
+
+init();
