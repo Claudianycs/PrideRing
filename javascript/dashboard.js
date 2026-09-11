@@ -5,7 +5,14 @@ const name=profile?.name||"Você";
 const userName=document.getElementById("userName");
 if(userName)userName.textContent=name;
 const avatar=document.getElementById("userAvatar");
-if(avatar)avatar.textContent=name.charAt(0).toUpperCase();
+if(!avatar)return;
+if(profile?.photo_url){
+avatar.style.backgroundImage=`url("${profile.photo_url}")`;
+avatar.textContent="";
+}else{
+avatar.style.backgroundImage="";
+avatar.textContent=name.charAt(0).toUpperCase();
+}
 }
 
 function renderRing(nfcTag){
@@ -40,14 +47,14 @@ recentCard.hidden=true;
 
 function renderSharing(profile,sharing,userId){
 const values={
-shareNameValue:profile?.name,
-sharePronounValue:profile?.pronoun,
-shareInstagramValue:profile?.instagram,
-shareWhatsappValue:profile?.whatsapp?"Informação privada":""
+shareNameValue:profile?.name||"Não informado",
+sharePronounValue:profile?.pronoun||"Não informado",
+shareInstagramValue:profile?.instagram||"Não informado",
+shareWhatsappValue:profile?.whatsapp?"Informação privada":"Não informado"
 };
 Object.entries(values).forEach(([id,value])=>{
 const el=document.getElementById(id);
-if(el&&value)el.textContent=value;
+if(el)el.textContent=value;
 });
 
 const toggles={

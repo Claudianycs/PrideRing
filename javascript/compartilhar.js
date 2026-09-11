@@ -3,6 +3,7 @@
 const columnByKey={
 name:"share_name",
 pronoun:"share_pronoun",
+photo:"share_photo",
 bio:"share_bio",
 instagram:"share_instagram",
 whatsapp:"share_whatsapp"
@@ -42,7 +43,15 @@ previewPronoun.textContent=preferences.pronoun?(profile.pronoun||"Pronome não i
 
 avatar.style.display=preferences.photo?"grid":"none";
 if(preferences.photo){
+if(profile.photo_url){
+avatar.style.backgroundImage=`url("${profile.photo_url}")`;
+avatar.style.backgroundSize="cover";
+avatar.style.backgroundPosition="center";
+avatar.textContent="";
+}else{
+avatar.style.backgroundImage="";
 avatar.textContent=(profile.name?.charAt(0)||"P").toUpperCase();
+}
 }
 
 previewData.innerHTML="";
@@ -102,7 +111,7 @@ publicLink.value=new URL("perfil-publico.html?u="+userId,window.location.href).h
 
 inputs.forEach(input=>{
 const key=input.dataset.key;
-input.checked=key==="photo"?true:Boolean(sharing?.[columnByKey[key]]);
+input.checked=Boolean(sharing?.[columnByKey[key]]);
 input.addEventListener("change",updatePreview);
 });
 

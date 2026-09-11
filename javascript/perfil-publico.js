@@ -59,7 +59,20 @@ hideWhenNotAllowed(nameElement,preferences.share_name,profile.name);
 hideWhenNotAllowed(pronounElement,preferences.share_pronoun,profile.pronoun);
 hideWhenNotAllowed(bioElement,preferences.share_bio,profile.bio);
 
+if(preferences.share_photo){
+avatar.style.display="";
+if(profile.photo_url){
+avatar.style.backgroundImage=`url("${profile.photo_url}")`;
+avatar.style.backgroundSize="cover";
+avatar.style.backgroundPosition="center";
+avatar.textContent="";
+}else{
+avatar.style.backgroundImage="";
 avatar.textContent=(profile.name?.charAt(0)||"P").toUpperCase();
+}
+}else{
+avatar.style.display="none";
+}
 
 if(preferences.share_instagram&&profile.instagram){
 createTag("Instagram");

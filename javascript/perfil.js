@@ -14,6 +14,7 @@ const photoButton=document.getElementById("photoButton");
 const photoInput=document.getElementById("photoInput");
 
 let userId=null;
+let photoDataUrl;
 
 nameInput.addEventListener("input",()=>{
 const value=nameInput.value.trim();
@@ -32,7 +33,8 @@ const file=photoInput.files[0];
 if(!file)return;
 const reader=new FileReader();
 reader.onload=()=>{
-avatar.style.backgroundImage=`url("${reader.result}")`;
+photoDataUrl=reader.result;
+avatar.style.backgroundImage=`url("${photoDataUrl}")`;
 avatar.style.backgroundSize="cover";
 avatar.style.backgroundPosition="center";
 avatar.textContent="";
@@ -51,6 +53,7 @@ bio:bioInput.value.trim(),
 instagram:instagramInput.value.trim(),
 whatsapp:whatsappInput.value.trim()
 };
+if(photoDataUrl!==undefined)profile.photo_url=photoDataUrl;
 
 const {error}=await supabaseClient.from("profiles").update(profile).eq("id",userId);
 
@@ -81,7 +84,14 @@ instagramInput.value=profile.instagram||"";
 whatsappInput.value=profile.whatsapp||"";
 previewName.textContent=profile.name||"Seu nome";
 previewPronoun.textContent=profile.pronoun||"Pronome não informado";
+if(profile.photo_url){
+avatar.style.backgroundImage=`url("${profile.photo_url}")`;
+avatar.style.backgroundSize="cover";
+avatar.style.backgroundPosition="center";
+avatar.textContent="";
+}else{
 avatar.textContent=(profile.name?.charAt(0)||"P").toUpperCase();
+}
 }
 
 init();

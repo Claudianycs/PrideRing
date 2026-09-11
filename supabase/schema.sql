@@ -11,9 +11,13 @@ create table if not exists public.profiles (
   bio text,
   instagram text,
   whatsapp text,
+  photo_url text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+-- Garante a coluna em bancos já existentes (create table acima só roda em bancos novos)
+alter table public.profiles add column if not exists photo_url text;
 
 -- Preferências de compartilhamento (o que aparece no perfil público)
 create table if not exists public.sharing_preferences (
@@ -23,8 +27,12 @@ create table if not exists public.sharing_preferences (
   share_bio boolean not null default true,
   share_instagram boolean not null default true,
   share_whatsapp boolean not null default false,
+  share_photo boolean not null default true,
   updated_at timestamptz not null default now()
 );
+
+-- Garante a coluna em bancos já existentes
+alter table public.sharing_preferences add column if not exists share_photo boolean not null default true;
 
 -- Vínculo entre o serial da tag NFC física e o dono do anel
 create table if not exists public.nfc_tags (
