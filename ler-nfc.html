@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="css/responsive.css">
 </head>
 
-<body class="page-ler-nfc">
+<body class="page-ler-nfc page-with-bottom-navigation">
     <header class="topbar">
         <a class="back" href="dashboard.html" aria-label="Voltar">←</a>
         <h1>Ler NFC</h1>
@@ -66,11 +66,49 @@
         </p>
     </main>
 
-    <nav>
-        <a href="dashboard.html">Início</a>
-        <a href="conexoes.html">Conexões</a>
-        <a class="active" href="ler-nfc.html">Ler NFC</a>
-        <a href="cadastrar-nfc.html">Meu NFC</a>
+    <nav class="bottom-navigation" aria-label="Navegação principal">
+        <a href="dashboard.html" class="nav-item">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m3 11 9-8 9 8"></path>
+                <path d="M5 10v11h14V10"></path>
+                <path d="M9 21v-7h6v7"></path>
+            </svg>
+            <span>Início</span>
+        </a>
+        <a href="perfil.html" class="nav-item">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="8" r="4"></circle>
+                <path d="M4.5 21a7.5 7.5 0 0 1 15 0"></path>
+            </svg>
+            <span>Perfil</span>
+        </a>
+        <a href="conexoes.html" class="nav-item nav-main-action" aria-label="Abrir minhas conexões">
+            <span class="nav-main-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="8" cy="8" r="3"></circle>
+                    <circle cx="17" cy="8" r="3"></circle>
+                    <path d="M2.5 20a5.5 5.5 0 0 1 11 0"></path>
+                    <path d="M11 20a6 6 0 0 1 11 0"></path>
+                </svg>
+            </span>
+            <span>Conexões</span>
+        </a>
+        <a href="cadastrar-nfc.html" class="nav-item">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M8 6a8.5 8.5 0 0 1 8 0"></path>
+                <path d="M9.8 9a5.5 5.5 0 0 1 4.4 0"></path>
+                <path d="M11 12a2.4 2.4 0 0 1 2 0"></path>
+                <circle cx="12" cy="15" r="1.4"></circle>
+            </svg>
+            <span>NFC</span>
+        </a>
+        <a href="configuracoes.html" class="nav-item">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a7.8 7.8 0 0 0 .1-1 7.8 7.8 0 0 0-.1-1l2-1.5-2-3.5-2.4 1a8 8 0 0 0-1.7-1L15 5h-4l-.4 3a8 8 0 0 0-1.7 1l-2.4-1-2 3.5 2 1.5a7.8 7.8 0 0 0-.1 1 7.8 7.8 0 0 0 .1 1l-2 1.5 2 3.5 2.4-1a8 8 0 0 0 1.7 1l.4 3h4l.4-3a8 8 0 0 0 1.7-1l2.4 1 2-3.5-2.1-1.5Z"></path>
+            </svg>
+            <span>Ajustes</span>
+        </a>
     </nav>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     <script src="javascript/supabaseClient.js"></script>

@@ -22,7 +22,6 @@ background:
 radial-gradient(circle at 80% 0%,rgba(139,92,246,.24),transparent 34%),
 linear-gradient(180deg,var(--bg),var(--bg-secondary));
 color:var(--text);
-padding-bottom:calc(92px + env(safe-area-inset-bottom));
 }
 button,input{font:inherit}
 button{cursor:pointer}
@@ -116,15 +115,6 @@ font-size:12px;line-height:1.55
 .notice.error{display:block;background:rgba(239,68,68,.13);color:#fecaca;border:1px solid rgba(239,68,68,.24)}
 .notice.warning{display:block;background:rgba(245,158,11,.13);color:#fde68a;border:1px solid rgba(245,158,11,.23)}
 .helper{margin-top:16px;color:var(--muted);font-size:11px;line-height:1.65;text-align:center}
-nav{
-position:fixed;left:0;right:0;bottom:0;z-index:10;
-height:calc(72px + env(safe-area-inset-bottom));
-padding-bottom:env(safe-area-inset-bottom);
-background:rgba(24,21,46,.94);backdrop-filter:blur(18px);
-border-top:1px solid var(--border);display:flex;justify-content:space-around;align-items:center
-}
-nav a{color:#d7d7f5;text-decoration:none;font-size:12px}
-nav .active{color:#bda8ff;font-weight:600}
 .hidden{display:none!important}
 @media(max-width:360px){
 .container{padding-left:14px;padding-right:14px}

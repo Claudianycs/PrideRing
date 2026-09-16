@@ -20,7 +20,6 @@ background:
 radial-gradient(circle at 80% 0%,rgba(139,92,246,.24),transparent 34%),
 linear-gradient(180deg,var(--bg),var(--bg2));
 color:var(--text);
-padding-bottom:calc(92px + env(safe-area-inset-bottom));
 }
 button,input{font:inherit}
 button{cursor:pointer}
@@ -125,15 +124,6 @@ border:none;border-radius:12px;padding:0 13px;background:var(--surface-strong);
 color:#fff;font-weight:600
 }
 .helper{margin-top:15px;color:var(--muted);font-size:11px;line-height:1.65;text-align:center}
-nav{
-position:fixed;left:0;right:0;bottom:0;z-index:10;
-height:calc(72px + env(safe-area-inset-bottom));
-padding-bottom:env(safe-area-inset-bottom);
-background:rgba(24,21,46,.94);backdrop-filter:blur(18px);
-border-top:1px solid var(--border);display:flex;justify-content:space-around;align-items:center
-}
-nav a{color:#d7d7f5;text-decoration:none;font-size:12px}
-nav .active{color:#bda8ff;font-weight:600}
 @media(max-width:360px){
 .container{padding-left:14px;padding-right:14px}
 .actions{grid-template-columns:1fr}
