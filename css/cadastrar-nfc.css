@@ -43,6 +43,34 @@ font-size:22px;text-decoration:none;display:grid;place-items:center;
 .intro{text-align:center;margin:5px 0 22px}
 .intro h2{font-size:25px;margin-bottom:8px}
 .intro p{font-size:14px;line-height:1.65;color:var(--muted)}
+.linked-rings{margin-bottom:20px}
+.linked-rings h3{font-size:14px;font-weight:600;margin-bottom:10px;color:var(--text)}
+.ring-list{display:grid;gap:10px}
+.ring-item{
+display:flex;align-items:center;gap:13px;
+padding:14px;border:1px solid var(--border);border-radius:18px;
+background:linear-gradient(135deg,rgba(139,92,246,.15),rgba(255,255,255,.045));
+}
+.ring-item-icon{
+flex:0 0 auto;width:44px;height:44px;display:grid;place-items:center;
+border:1px solid rgba(255,255,255,.13);border-radius:14px;
+background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+color:#fff;
+}
+.ring-item-icon svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ring-item-info{min-width:0;flex:1}
+.ring-item-info strong{display:block;overflow:hidden;font-size:13px;font-weight:600;text-overflow:ellipsis;white-space:nowrap;margin-bottom:5px}
+.ring-status{
+display:inline-flex;align-items:center;gap:6px;
+padding:5px 9px;border-radius:999px;font-size:10px;font-weight:600;
+border:1px solid rgba(41,197,94,.25);background:rgba(34,197,94,.14);color:#a7f3d0;
+}
+.ring-status-dot{width:6px;height:6px;border-radius:50%;background:var(--success)}
+.ring-item-remove{
+flex:0 0 auto;border:1px solid rgba(239,68,68,.28);border-radius:11px;
+background:rgba(239,68,68,.13);color:#fecaca;font-size:11px;font-weight:600;
+padding:9px 11px;
+}
 .nfc-card{
 position:relative;overflow:hidden;
 background:var(--surface);
@@ -114,6 +142,17 @@ font-size:12px;line-height:1.55
 .notice.success{display:block;background:rgba(34,197,94,.14);color:#bbf7d0;border:1px solid rgba(34,197,94,.25)}
 .notice.error{display:block;background:rgba(239,68,68,.13);color:#fecaca;border:1px solid rgba(239,68,68,.24)}
 .notice.warning{display:block;background:rgba(245,158,11,.13);color:#fde68a;border:1px solid rgba(245,158,11,.23)}
+.write-tag{
+margin-top:18px;background:rgba(139,92,246,.09);border:1px solid rgba(139,92,246,.25);
+border-radius:22px;padding:19px;text-align:center
+}
+.write-tag h3{font-size:16px;margin-bottom:7px}
+.write-tag p{color:var(--muted);font-size:12px;line-height:1.55}
+.write-tag-status{min-height:16px;color:var(--primary)!important}
+.ghost-button{
+width:100%;border:none;border-radius:15px;padding:12px 18px;
+margin-top:8px;background:transparent;color:var(--muted);font-weight:600
+}
 .helper{margin-top:16px;color:var(--muted);font-size:11px;line-height:1.65;text-align:center}
 .hidden{display:none!important}
 @media(max-width:360px){

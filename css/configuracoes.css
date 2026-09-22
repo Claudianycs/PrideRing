@@ -47,6 +47,19 @@ padding:14px 0;
 border-bottom:1px solid rgba(255,255,255,.08);
 }
 .item:last-child{border:none}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;color:#d8d8ee;margin-bottom:7px}
+.field input{
+width:100%;
+border:none;
+outline:none;
+border-radius:13px;
+padding:14px;
+background:rgba(255,255,255,.09);
+color:#fff;
+font-size:14px;
+}
+.field input::placeholder{color:#aaaac2}
 .switch{
 position:relative;
 width:48px;
@@ -101,4 +114,8 @@ background:rgba(34,197,94,.15);
 color:#bbf7d0;
 text-align:center;
 font-size:13px;
+}
+.notice.error{
+background:rgba(239,68,68,.15);
+color:#fecaca;
 }

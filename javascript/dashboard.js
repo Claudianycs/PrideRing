@@ -15,11 +15,13 @@ avatar.textContent=name.charAt(0).toUpperCase();
 }
 }
 
-function renderRing(nfcTag){
+function renderRing(nfcTags){
 const ringName=document.getElementById("ringName");
 const ringStatus=document.getElementById("ringStatus");
-if(nfcTag){
-ringName.textContent=nfcTag.ring_name||"Meu PRiDeRing";
+const primary=nfcTags&&nfcTags[0];
+if(primary){
+const extra=nfcTags.length>1?` (+${nfcTags.length-1})`:"";
+ringName.textContent=(primary.ring_name||"Meu PRiDeRing")+extra;
 ringStatus.className="status-badge status-connected";
 ringStatus.innerHTML='<span class="status-dot"></span> Conectado';
 }else{
@@ -79,15 +81,15 @@ const session=await requireSession();
 if(!session)return;
 const userId=session.user.id;
 
-const [{data:profile},{data:sharing},{data:nfcTag},{data:connections}]=await Promise.all([
+const [{data:profile},{data:sharing},{data:nfcTags},{data:connections}]=await Promise.all([
 supabaseClient.from("profiles").select("*").eq("id",userId).single(),
 supabaseClient.from("sharing_preferences").select("*").eq("user_id",userId).single(),
-supabaseClient.from("nfc_tags").select("*").eq("user_id",userId).maybeSingle(),
+supabaseClient.from("nfc_tags").select("*").eq("user_id",userId).order("linked_at",{ascending:false}),
 supabaseClient.from("connections").select("*").eq("owner_id",userId).order("created_at",{ascending:false})
 ]);
 
 renderGreeting(profile);
-renderRing(nfcTag);
+renderRing(nfcTags||[]);
 renderConnections(connections||[]);
 renderSharing(profile,sharing,userId);
 

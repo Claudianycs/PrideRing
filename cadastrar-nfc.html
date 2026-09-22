@@ -24,10 +24,16 @@
     <main class="container">
         <section class="intro">
             <h2>Vincule seu anel</h2>
-            <p>Aproxime o PRiDeRing da parte traseira do celular para identificar e vincular a tag NFC ao seu perfil.</p>
+            <p>Aproxime o PRiDeRing da parte traseira do celular para identificar e vincular a tag NFC ao seu perfil. Você pode vincular mais de um anel à mesma conta.</p>
+        </section>
+
+        <section class="linked-rings" id="linkedRings" hidden>
+            <h3>Anéis vinculados</h3>
+            <div class="ring-list" id="ringList"></div>
         </section>
 
         <section class="nfc-card">
+
             <div class="scanner" aria-hidden="true">
                 <span class="wave one"></span>
                 <span class="wave two"></span>
@@ -63,8 +69,15 @@
             <label for="ringName">Identificação</label>
             <input id="ringName" type="text" maxlength="40" value="Meu PRiDeRing" placeholder="Ex.: Anel principal">
             <button class="primary-button" id="linkButton" type="button" disabled>Vincular à minha conta</button>
-            <button class="danger-button hidden" id="removeButton" type="button">Remover vínculo</button>
             <div class="notice" id="notice" role="status" aria-live="polite"></div>
+        </section>
+
+        <section class="write-tag hidden" id="writeTagSection">
+            <h3>Gravar link do perfil na tag</h3>
+            <p>Anel vinculado! Você pode gravar o link do seu perfil público diretamente na tag — assim qualquer celular abre seu perfil ao encostar, mesmo sem o app instalado.</p>
+            <p class="write-tag-status" id="writeTagStatus"></p>
+            <button class="secondary-button" id="writeTagButton" type="button">Aproximar e gravar na tag</button>
+            <button class="ghost-button" id="skipWriteButton" type="button">Agora não</button>
         </section>
 
         <p class="helper">O vínculo fica salvo na sua conta PRiDeRing e vale para qualquer celular que ler este anel.</p>

@@ -3,7 +3,6 @@
 const scanButton=document.getElementById("scanButton");
 const simulateButton=document.getElementById("simulateButton");
 const linkButton=document.getElementById("linkButton");
-const removeButton=document.getElementById("removeButton");
 const statusTitle=document.getElementById("statusTitle");
 const statusText=document.getElementById("statusText");
 const details=document.getElementById("details");
@@ -12,9 +11,18 @@ const recordType=document.getElementById("recordType");
 const recordData=document.getElementById("recordData");
 const ringName=document.getElementById("ringName");
 const notice=document.getElementById("notice");
+const linkedRings=document.getElementById("linkedRings");
+const ringList=document.getElementById("ringList");
+const writeTagSection=document.getElementById("writeTagSection");
+const writeTagStatus=document.getElementById("writeTagStatus");
+const writeTagButton=document.getElementById("writeTagButton");
+const skipWriteButton=document.getElementById("skipWriteButton");
+
+const ringIconSvg='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.4 4.7a5.6 5.6 0 0 1 7.2 0M6 2.5a9 9 0 0 1 12 0M10.5 7a2.3 2.3 0 0 1 3 0"></path><circle cx="12" cy="10" r="1.2"></circle><path d="M6.5 14.5c0-2 2.46-3.5 5.5-3.5s5.5 1.5 5.5 3.5-2.46 5.5-5.5 5.5-5.5-3.5-5.5-5.5Z"></path></svg>';
 
 let detectedTag=null;
 let userId=null;
+let lastScanWasSimulated=false;
 
 function showNotice(message,type){
 notice.textContent=message;
@@ -24,6 +32,20 @@ notice.className="notice "+type;
 function clearNotice(){
 notice.textContent="";
 notice.className="notice";
+}
+
+function resetScanState(){
+detectedTag=null;
+details.style.display="none";
+serialNumber.textContent="—";
+recordType.textContent="—";
+recordData.textContent="—";
+ringName.value="Meu PRiDeRing";
+linkButton.textContent="Vincular à minha conta";
+linkButton.disabled=true;
+scanButton.textContent="Ler NFC";
+statusTitle.textContent="Pronto para ler";
+statusText.textContent="Toque no botão e aproxime o anel do celular.";
 }
 
 function decodeRecord(record){
@@ -54,6 +76,7 @@ scanButton.textContent="Ler novamente";
 
 async function scanNfc(){
 clearNotice();
+writeTagSection.classList.add("hidden");
 if(!("NDEFReader" in window)){
 statusTitle.textContent="NFC indisponível";
 statusText.textContent="Este navegador não oferece suporte à leitura Web NFC.";
@@ -78,6 +101,7 @@ showNotice("Ocorreu um erro durante a leitura da tag NFC.","error");
 
 reader.addEventListener("reading",event=>{
 const firstRecord=event.message.records[0];
+lastScanWasSimulated=false;
 showDetectedTag({
 serialNumber:event.serialNumber||"NFC-"+Date.now(),
 recordType:firstRecord?.recordType||"NDEF",
@@ -95,7 +119,9 @@ showNotice("Não foi possível acessar o NFC. Você pode utilizar a simulação 
 }
 
 function simulateScan(){
+writeTagSection.classList.add("hidden");
 const randomId="04:"+Array.from({length:7},()=>Math.floor(Math.random()*256).toString(16).padStart(2,"0").toUpperCase()).join(":");
+lastScanWasSimulated=true;
 showDetectedTag({
 serialNumber:randomId,
 recordType:"NDEF",
@@ -140,55 +166,97 @@ linkButton.disabled=false;
 return;
 }
 
-linkButton.textContent="Anel vinculado";
-removeButton.classList.remove("hidden");
-statusTitle.textContent="Anel vinculado";
-statusText.textContent="O PRiDeRing está associado ao seu perfil.";
 showNotice("Anel NFC vinculado com sucesso.","success");
+const wasSimulated=lastScanWasSimulated;
+resetScanState();
+await loadLinkedRings();
+
+if("NDEFReader" in window&&!wasSimulated){
+writeTagStatus.textContent="";
+writeTagButton.disabled=false;
+writeTagButton.textContent="Aproximar e gravar na tag";
+writeTagSection.classList.remove("hidden");
+}
 }
 
-async function removeLink(){
-if(!userId)return;
-await supabaseClient.from("nfc_tags").delete().eq("user_id",userId);
-detectedTag=null;
-details.style.display="none";
-serialNumber.textContent="—";
-recordType.textContent="—";
-recordData.textContent="—";
-linkButton.textContent="Vincular à minha conta";
-linkButton.disabled=true;
-removeButton.classList.add("hidden");
-statusTitle.textContent="Pronto para ler";
-statusText.textContent="Toque no botão e aproxime o anel do celular.";
+async function writeProfileToTag(){
+writeTagButton.disabled=true;
+writeTagStatus.textContent="Aproxime o anel do celular para gravar...";
+
+try{
+const profileUrl=new URL("perfil-publico.html?u="+userId,window.location.href).href;
+const reader=new NDEFReader();
+await reader.write({records:[{recordType:"url",data:profileUrl}]});
+writeTagStatus.textContent="Link gravado com sucesso na tag.";
+showNotice("Link do perfil gravado na tag NFC.","success");
+setTimeout(()=>writeTagSection.classList.add("hidden"),1500);
+}catch(error){
+writeTagStatus.textContent="Não foi possível gravar. A tag pode ser somente leitura — tente novamente ou pule esta etapa.";
+writeTagButton.disabled=false;
+}
+}
+
+function skipWrite(){
+writeTagSection.classList.add("hidden");
+}
+
+async function removeTag(serial){
+await supabaseClient.from("nfc_tags").delete().eq("serial_number",serial).eq("user_id",userId);
 showNotice("Vínculo removido da sua conta.","success");
+await loadLinkedRings();
 }
 
-async function loadLinkedRing(){
-const {data:tag}=await supabaseClient
+function renderRingItem(tag){
+const item=document.createElement("div");
+item.className="ring-item";
+
+const icon=document.createElement("div");
+icon.className="ring-item-icon";
+icon.innerHTML=ringIconSvg;
+
+const info=document.createElement("div");
+info.className="ring-item-info";
+const name=document.createElement("strong");
+name.textContent=tag.ring_name||"Meu PRiDeRing";
+const status=document.createElement("span");
+status.className="ring-status";
+status.innerHTML='<span class="ring-status-dot"></span> Conectado';
+info.append(name,status);
+
+const removeBtn=document.createElement("button");
+removeBtn.type="button";
+removeBtn.className="ring-item-remove";
+removeBtn.textContent="Remover";
+removeBtn.setAttribute("aria-label","Remover "+(tag.ring_name||"anel")+" da conta");
+removeBtn.addEventListener("click",()=>removeTag(tag.serial_number));
+
+item.append(icon,info,removeBtn);
+return item;
+}
+
+async function loadLinkedRings(){
+const {data:tags}=await supabaseClient
 .from("nfc_tags")
 .select("*")
 .eq("user_id",userId)
-.maybeSingle();
+.order("linked_at",{ascending:false});
 
-if(!tag)return;
+ringList.innerHTML="";
 
-ringName.value=tag.ring_name||"Meu PRiDeRing";
-showDetectedTag({
-serialNumber:tag.serial_number,
-recordType:tag.record_type||"NDEF",
-data:"Vinculado ao seu perfil"
-});
-linkButton.textContent="Anel vinculado";
-linkButton.disabled=true;
-removeButton.classList.remove("hidden");
-statusTitle.textContent="Anel vinculado";
-statusText.textContent="Este NFC já está associado ao seu perfil.";
+if(!tags||!tags.length){
+linkedRings.hidden=true;
+return;
+}
+
+tags.forEach(tag=>ringList.appendChild(renderRingItem(tag)));
+linkedRings.hidden=false;
 }
 
 scanButton.addEventListener("click",scanNfc);
 simulateButton.addEventListener("click",simulateScan);
 linkButton.addEventListener("click",saveLink);
-removeButton.addEventListener("click",removeLink);
+writeTagButton.addEventListener("click",writeProfileToTag);
+skipWriteButton.addEventListener("click",skipWrite);
 
 if(!("NDEFReader" in window)){
 simulateButton.classList.remove("hidden");
@@ -198,7 +266,7 @@ async function init(){
 const session=await requireSession();
 if(!session)return;
 userId=session.user.id;
-await loadLinkedRing();
+await loadLinkedRings();
 }
 
 init();
