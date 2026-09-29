@@ -231,14 +231,22 @@ async function maybeRecordConnection(targetId, targetName) {
         return;
     }
 
-    await supabaseClient.from("connections").upsert(
-        {
-            owner_id: session.user.id,
-            target_id: targetId,
-            target_name: targetName
-        },
-        { onConflict: "owner_id,target_id", ignoreDuplicates: true }
-    );
+    const { data: existing } = await supabaseClient
+        .from("connections")
+        .select("id")
+        .eq("owner_id", session.user.id)
+        .eq("target_id", targetId)
+        .maybeSingle();
+
+    if (existing) {
+        return;
+    }
+
+    await supabaseClient.from("connections").insert({
+        owner_id: session.user.id,
+        target_id: targetId,
+        target_name: targetName
+    });
 }
 
 async function resolveAndShow(result) {

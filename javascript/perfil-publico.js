@@ -144,13 +144,24 @@ window.location.href="login.html";
 return;
 }
 
-const {data}=await supabaseClient.from("connections").upsert({
+const {data:existing}=await supabaseClient.from("connections")
+.select("id")
+.eq("owner_id",session.user.id)
+.eq("target_id",targetId)
+.maybeSingle();
+
+if(existing){
+showNotice("Vocês já estão conectados.");
+return;
+}
+
+await supabaseClient.from("connections").insert({
 owner_id:session.user.id,
 target_id:targetId,
 target_name:profile.name
-},{onConflict:"owner_id,target_id",ignoreDuplicates:true}).select();
+});
 
-showNotice(data&&data.length?"Conexão registrada com sucesso.":"Vocês já estão conectados.");
+showNotice("Conexão registrada com sucesso.");
 });
 }
 
