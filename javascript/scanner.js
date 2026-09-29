@@ -231,11 +231,14 @@ async function maybeRecordConnection(targetId, targetName) {
         return;
     }
 
-    await supabaseClient.from("connections").insert({
-        owner_id: session.user.id,
-        target_id: targetId,
-        target_name: targetName
-    });
+    await supabaseClient.from("connections").upsert(
+        {
+            owner_id: session.user.id,
+            target_id: targetId,
+            target_name: targetName
+        },
+        { onConflict: "owner_id,target_id", ignoreDuplicates: true }
+    );
 }
 
 async function resolveAndShow(result) {

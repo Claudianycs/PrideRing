@@ -31,7 +31,18 @@ ringStatus.innerHTML='<span class="status-dot"></span> Não vinculado';
 }
 }
 
-function renderConnections(connections){
+function dedupeConnections(items){
+const seen=new Set();
+return items.filter(connection=>{
+const key=connection.target_id||connection.id;
+if(seen.has(key))return false;
+seen.add(key);
+return true;
+});
+}
+
+function renderConnections(rawConnections){
+const connections=dedupeConnections(rawConnections);
 const count=connections.length;
 document.getElementById("connectionCount").textContent=count+(count===1?" conexão":" conexões");
 document.getElementById("connectionSummary").textContent=count?"Veja quem você conheceu pelo PRiDeRing.":"Suas conexões aparecerão aqui.";

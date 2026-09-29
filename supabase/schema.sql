@@ -92,6 +92,12 @@ create policy "connections_select_own" on public.connections
 create policy "connections_insert_own" on public.connections
   for insert with check (auth.uid() = owner_id);
 
+-- Evita duplicar a mesma conexão quando o mesmo anel é lido mais de uma vez
+-- (target_id nulo não conta, pois representa um perfil já excluído).
+create unique index if not exists connections_owner_target_unique
+  on public.connections (owner_id, target_id)
+  where target_id is not null;
+
 -- Cria automaticamente profiles + sharing_preferences quando uma conta é criada,
 -- para que essas linhas sempre existam (evita ter que checar "não existe ainda"
 -- espalhado pelo frontend).

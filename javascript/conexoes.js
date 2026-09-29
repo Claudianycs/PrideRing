@@ -4,6 +4,16 @@ const search=document.getElementById('searchInput');
 
 let connections=[];
 
+function dedupeConnections(items){
+const seen=new Set();
+return items.filter(connection=>{
+const key=connection.target_id||connection.id;
+if(seen.has(key))return false;
+seen.add(key);
+return true;
+});
+}
+
 function render(items){
 list.innerHTML='';
 if(!items.length){
@@ -46,7 +56,7 @@ const {data}=await supabaseClient
 .eq('owner_id',session.user.id)
 .order('created_at',{ascending:false});
 
-connections=data||[];
+connections=dedupeConnections(data||[]);
 render(connections);
 }
 

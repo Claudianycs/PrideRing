@@ -144,13 +144,13 @@ window.location.href="login.html";
 return;
 }
 
-await supabaseClient.from("connections").insert({
+const {data}=await supabaseClient.from("connections").upsert({
 owner_id:session.user.id,
 target_id:targetId,
 target_name:profile.name
-});
+},{onConflict:"owner_id,target_id",ignoreDuplicates:true}).select();
 
-showNotice("Conexão registrada com sucesso.");
+showNotice(data&&data.length?"Conexão registrada com sucesso.":"Vocês já estão conectados.");
 });
 }
 
